@@ -1,18 +1,34 @@
 import type {
-  GetStaticProps,
   NextPage,
 } from 'next';
-import { Navigation } from '../components/Navigation';
+import { useState } from 'react';
+import { LoginPanel, LoginPanelTypes } from '../components/Panel';
 
 const Home: NextPage = () => {
+  const [ panelType, setPanelType ] = useState<LoginPanelTypes>("login");
+  
+  const togglePanel = () => { 
+    setPanelType(value => {
+      if (value === "register") return "login";
+      return "register"
+    })
+  };
+
   return (
     <div>
-      <Navigation />
+      <LoginPanel panelType={panelType} />
+      <p>
+        {
+          panelType === "register"  ? "If you don't have an account, sing up!" : "If you already have an account, just sign in"
+        }
+        <button onClick={togglePanel}>
+          {
+            panelType
+          }
+      </button>
+      </p>
     </div>
   );
 };
 
 export default Home;
-
-export const getStaticProps: GetStaticProps =
-  () => {};
