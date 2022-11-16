@@ -1,7 +1,7 @@
 import { Navigation } from "../../components/Navigation";
 
 function DashboardPage() {
-  return <div>
+  return <div className="">
     <Navigation />
     dashboard page
     </div>;
