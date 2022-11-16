@@ -6,7 +6,7 @@ interface LayoutProps {
 
 const Layout: FC<LayoutProps> = ({ children }) => { 
   return (
-    <div className="d-flex justify-content-center container-fluid">
+    <div className="d-flex justify-content-center container align-items-center">
       {children}
     </div>
   )
