@@ -11,3 +11,5 @@ const ErrorMsg: FC<ErrorMsgProps> = ({
     <div className='alert-danger'>{content}</div>
   );
 };
+
+export default ErrorMsg;

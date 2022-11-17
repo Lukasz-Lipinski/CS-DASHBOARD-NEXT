@@ -1,7 +1,11 @@
+import DashboardLayout from '../../../components/Layouts/DashboardLayout';
+
 export default function ProfilePage() {
   return (
-    <div>
-      Profile Page
-    </div>
-  )
+    <DashboardLayout>
+      <>
+        <div>Profile Page</div>
+      </>
+    </DashboardLayout>
+  );
 }

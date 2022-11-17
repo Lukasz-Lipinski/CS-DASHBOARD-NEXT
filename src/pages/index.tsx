@@ -1,32 +1,34 @@
-import type {
-  NextPage,
-} from 'next';
-import { useEffect, useState } from 'react';
-import { LoginPanel, LoginPanelTypes } from '../components/Panel';
+import type { NextPage } from 'next';
+import { useState } from 'react';
+import {
+  LoginPanel,
+  LoginPanelTypes,
+} from '../components/Panel';
 
 const Home: NextPage = () => {
-  const [ panelType, setPanelType ] = useState<LoginPanelTypes>("login");
-  
+  const [panelType, setPanelType] =
+    useState<LoginPanelTypes>('signin');
+
   const togglePanel = () => {
-    setPanelType(value => {
-      if (value === "register") return "login";
-      return "register"
-    })
+    setPanelType((value) => {
+      if (value === 'signin') return 'signup';
+      return 'signin';
+    });
   };
 
   return (
-    <div>
+    <div className='d-flex flex-column'>
       <LoginPanel panelType={panelType} />
-      <p>
-        {
-          panelType === "register"  ? "If you don't have an account, sing up!" : "If you already have an account, just sign in"
-        }
-        <button onClick={togglePanel} className="btn btn-outline-primary">
-          {
-            panelType
-          }
-      </button>
+      <p className='text-center'>
+        <a
+          className='btn btn-link'
+          onClick={togglePanel}
+        >
+          Click here
+        </a>
+        to {panelType} !
       </p>
+      <div></div>
     </div>
   );
 };

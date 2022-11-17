@@ -1,10 +1,12 @@
-import { Navigation } from "../../components/Navigation";
+import DashboardLayout from '../../components/Layouts/DashboardLayout';
+import { Navigation } from '../../components/Navigation';
 
 function DashboardPage() {
-  return <div className="">
-    <Navigation />
-    dashboard page
-    </div>;
+  return (
+    <DashboardLayout>
+      <> dashboard page</>
+    </DashboardLayout>
+  );
 }
 
 export default DashboardPage;

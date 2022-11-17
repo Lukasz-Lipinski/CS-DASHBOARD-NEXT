@@ -1,6 +1,6 @@
-import { useFormik } from "formik";
+import { useFormik } from 'formik';
 
-export type LoginPanelTypes = "register" | "login";
+export type LoginPanelTypes = 'signup' | 'signin';
 
 interface LoginPanelProps {
   panelType: LoginPanelTypes;
@@ -11,9 +11,11 @@ interface ErrorI {
   password: boolean;
 }
 
-export function LoginPanel({ panelType }: LoginPanelProps) {
+export function LoginPanel({
+  panelType,
+}: LoginPanelProps) {
   const formik = useFormik({
-    initialValues: { email: "", password: "" },
+    initialValues: { email: '', password: '' },
     validate: (values) => {
       const { email, password } = values;
       let error: ErrorI = {
@@ -21,13 +23,17 @@ export function LoginPanel({ panelType }: LoginPanelProps) {
         password: false,
       };
 
-      if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)) {
+      if (
+        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+          email
+        )
+      ) {
         error.email = true;
-      } 
+      }
 
       if (password.length < 7) {
         error.password = true;
-      };
+      }
 
       const errorFlags = Object.values(error);
 
@@ -36,35 +42,60 @@ export function LoginPanel({ panelType }: LoginPanelProps) {
           return error;
         }
       }
-      return undefined
+      return undefined;
     },
-    onSubmit: (values, actions) => {      
-      if (panelType === "login") {
+    onSubmit: (values, actions) => {
+      if (panelType === 'signin') {
         console.log(values, panelType);
       } else {
         console.log(values, panelType);
       }
-    }
-  })
+    },
+  });
 
   return (
-    <div className="shadow-sm p-4 border border-1">
-    <form onSubmit={formik.handleSubmit}  className="d-flex flex-column">
-      <label htmlFor="" className="">
-        <p>Email: </p>
-        <input type="email" value={formik.values.email} name="email" onChange={formik.handleChange} />
-      </label>
-      <label htmlFor="">
-        <p>Password: </p>
-        <input type="password" value={formik.values.password} name="password" onChange={formik.handleChange} />
-      </label>
+    <div className='shadow-sm p-5 border border-1 rounded'>
+      <form
+        onSubmit={formik.handleSubmit}
+        className='d-flex flex-column gap-4'
+      >
+        <div className='form-floating'>
+          <input
+            className='form-control'
+            type='email'
+            id='inputEmail'
+            value={formik.values.email}
+            name='email'
+            onChange={formik.handleChange}
+          />
+          <label htmlFor='inputEmail'>
+            Email:
+          </label>
+        </div>
+        <div className='form-floating'>
+          <input
+            className='form-control'
+            type='password'
+            value={formik.values.password}
+            name='password'
+            onChange={formik.handleChange}
+          />
+          <label className=''>Password: </label>
+        </div>
 
-      
-      <button type="submit" className={formik.isValid ? "btn btn-outline-success" : "btn btn-outline-danger"}>
-        { panelType === "register" ? "login" : 'register' }
-      </button>
-
-    </form>
+        <button
+          type='submit'
+          className={`
+            mt-4
+            ${
+              formik.isValid
+                ? 'btn btn-outline-success'
+                : 'btn btn-outline-danger'
+            }`}
+        >
+          {panelType}
+        </button>
+      </form>
     </div>
   );
 }

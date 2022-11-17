@@ -1,11 +1,14 @@
-import { FC } from "react";
+import { FC } from 'react';
+import DashboardLayout from '../../../components/Layouts/DashboardLayout';
 
-const AddProductPage: FC = () => { 
+const AddProductPage: FC = () => {
   return (
-    <div>
-      AddProductPage
-    </div>
-  )
- };
+    <DashboardLayout>
+      <>
+        <div>AddProductPage</div>
+      </>
+    </DashboardLayout>
+  );
+};
 
- export default AddProductPage;
+export default AddProductPage;
