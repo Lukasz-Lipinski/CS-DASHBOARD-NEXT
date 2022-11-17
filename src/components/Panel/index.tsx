@@ -1,4 +1,5 @@
 import { useFormik } from 'formik';
+import axios from 'axios';
 
 export type LoginPanelTypes = 'signup' | 'signin';
 
@@ -9,6 +10,20 @@ interface LoginPanelProps {
 interface ErrorI {
   email: boolean;
   password: boolean;
+}
+
+interface Req {
+  email: string;
+  password: string;
+  returnSecureToken: boolean;
+}
+
+interface Res {
+  idToken: string;
+  email: string;
+  refreshToken: string;
+  expiresIn: string;
+  localId: string;
 }
 
 export function LoginPanel({
@@ -24,7 +39,7 @@ export function LoginPanel({
       };
 
       if (
-        /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(
+        !/^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/.test(
           email
         )
       ) {
@@ -45,16 +60,36 @@ export function LoginPanel({
       return undefined;
     },
     onSubmit: (values, actions) => {
+      const body: Req = {
+        email: values.email,
+        password: values.password,
+        returnSecureToken: true,
+      };
+
       if (panelType === 'signin') {
-        console.log(values, panelType);
+        axios
+          .post<Res>(
+            process.env.NEXT_PUBLIC_SIGNIN!,
+            body
+          )
+          .then((res) => {
+            console.log(res);
+          })
+          .catch((err) => console.log(err));
       } else {
-        console.log(values, panelType);
+        axios
+          .post<Res>(
+            process.env.NEXT_PUBLIC_SIGNUP!,
+            body
+          )
+          .then((res) => console.log(res))
+          .catch((err) => console.log(err));
       }
     },
   });
 
   return (
-    <div className='shadow-sm p-5 border border-1 rounded'>
+    <div className='shadow p-5 border border- rounded'>
       <form
         onSubmit={formik.handleSubmit}
         className='d-flex flex-column gap-4'
@@ -62,7 +97,7 @@ export function LoginPanel({
         <div className='form-floating'>
           <input
             className='form-control'
-            type='email'
+            type='text'
             id='inputEmail'
             value={formik.values.email}
             name='email'
@@ -85,6 +120,7 @@ export function LoginPanel({
 
         <button
           type='submit'
+          disabled={!formik.dirty}
           className={`
             mt-4
             ${
