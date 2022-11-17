@@ -17,18 +17,19 @@ const Home: NextPage = () => {
   };
 
   return (
-    <div className='d-flex flex-column'>
-      <LoginPanel panelType={panelType} />
-      <p className='text-center'>
-        <a
-          className='btn btn-link'
-          onClick={togglePanel}
-        >
-          Click here
-        </a>
-        to {panelType} !
-      </p>
-      <div></div>
+    <div className='d-flex align-items-center vh-100'>
+      <div>
+        <LoginPanel panelType={panelType} />
+        <p className='d-flex justify-content-center align-items-center p-2'>
+          <a
+            className='btn btn-link'
+            onClick={togglePanel}
+          >
+            Click here
+          </a>
+          to {panelType} !
+        </p>
+      </div>
     </div>
   );
 };
