@@ -1,10 +1,14 @@
 import { useFormik } from 'formik';
 import axios from 'axios';
+import { AxiosResponse, AxiosError } from 'axios';
+import { useMemo } from 'react';
+import { useRouter } from 'next/router';
 
 export type LoginPanelTypes = 'signup' | 'signin';
 
 interface LoginPanelProps {
   panelType: LoginPanelTypes;
+  setUser: () => void;
 }
 
 interface ErrorI {
@@ -29,6 +33,7 @@ interface Res {
 export function LoginPanel({
   panelType,
 }: LoginPanelProps) {
+  const router = useRouter();
   const formik = useFormik({
     initialValues: { email: '', password: '' },
     validate: (values) => {
@@ -73,20 +78,42 @@ export function LoginPanel({
             body
           )
           .then((res) => {
-            console.log(res);
+            const { data } = res;
+            fetch('api/auth', {
+              method: 'POST',
+              body: JSON.stringify(data),
+            });
+
+            router.push('/dashboard');
           })
-          .catch((err) => console.log(err));
+          .catch((err: AxiosError<Res>) =>
+            console.log(err.response?.data)
+          );
       } else {
         axios
           .post<Res>(
             process.env.NEXT_PUBLIC_SIGNUP!,
             body
           )
-          .then((res) => console.log(res))
-          .catch((err) => console.log(err));
+          .then((res) => console.log(res.data))
+          .catch((err: AxiosError<Res>) =>
+            console.log(err.response?.data)
+          );
       }
     },
   });
+
+  const emailControlClass = useMemo(() => {
+    return formik.errors.email
+      ? 'is-invalid'
+      : '';
+  }, [formik.errors.email]);
+
+  const passwordControlClass = useMemo(() => {
+    return formik.errors.password
+      ? 'is-invalid'
+      : '';
+  }, [formik.errors.password]);
 
   return (
     <div className='shadow p-5 border border- rounded'>
@@ -96,7 +123,7 @@ export function LoginPanel({
       >
         <div className='form-floating'>
           <input
-            className='form-control'
+            className={`form-control ${emailControlClass}`}
             type='text'
             id='inputEmail'
             value={formik.values.email}
@@ -109,7 +136,7 @@ export function LoginPanel({
         </div>
         <div className='form-floating'>
           <input
-            className='form-control'
+            className={`form-control ${passwordControlClass}`}
             type='password'
             value={formik.values.password}
             name='password'

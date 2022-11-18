@@ -27,7 +27,10 @@ const Home: NextPage = () => {
           >
             Click here
           </a>
-          to {panelType} !
+          to{' '}
+          {panelType === 'signin'
+            ? 'sign up'
+            : 'sign in'}
         </p>
       </div>
     </div>
